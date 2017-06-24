@@ -1,0 +1,80 @@
+
+.header {
+  width: 100%;
+  height: 5rem;
+  border: 1px solid black;
+
+  display: flex;
+  justify-content: center;
+}
+
+
+.wrapper {
+  border: 1px solid orange;
+  min-width: 200px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nav {
+  width: 400px;
+  min-height: 50px;
+  border: 1px solid black;
+
+  display: flex;
+  justify-content: center;
+}
+
+.gameboard {
+  width: auto;
+  min-height: auto;
+  border: 1px solid black;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+table {
+  border-collapse:collapse;
+}
+
+td {
+  border: 1px solid black;
+  height: 5px;
+  width: 5px;
+  margin: 0px;
+}
+
+td.solid {
+  background-color: orange;
+}
+
+/*
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+*/
