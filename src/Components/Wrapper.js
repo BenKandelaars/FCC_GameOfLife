@@ -1,11 +1,11 @@
 import React from "react";
 import Nav from "./Nav.js";
-import GameBoard from "./GameBoard.js";
+import Grid from "./Grid.js";
 import { convertIndex2Coord } from "./HelperComponents.js";
 
 function initializeGameBoard(x, y) {
   let grid_row = new Array(x);
-  grid_row.fill(false)
+  grid_row.fill(false);
   let grid = new Array(y);
   grid.fill(grid_row);
 
@@ -17,8 +17,15 @@ function initializeGameBoard(x, y) {
 function calcNextGameBoard(currentGameBoard, height, width) {
   function calcLiveNeighbours(index) {
     const vectorsToCheck = [
-      [0, 1],[1, 1], [1, 0], [1, -1],
-      [0, -1], [-1, -1], [-1, 0], [-1, 1]];
+      [0, 1],
+      [1, 1],
+      [1, 0],
+      [1, -1],
+      [0, -1],
+      [-1, -1],
+      [-1, 0],
+      [-1, 1]
+    ];
 
     let liveNeighbours = 0;
     let tileIndex;
@@ -64,19 +71,38 @@ class Wrapper extends React.Component {
     super(props);
 
     this.state = {
-      height: 25,
-      width: 25,
-      gameBoard: initializeGameBoard(25, 25),
+      height: 50,
+      width: 50,
       turn: 0,
-      speed: 50
+      speed: 100
     };
 
     this.timer = undefined;
     this.updateViewNextTurn = this.updateViewNextTurn.bind(this);
   }
 
+  componentWillMount() {
+    this.setState({
+      gameBoard: initializeGameBoard(
+        this.state.height,
+        this.state.width)
+    });
+  }
+
+  componentDidMount() {
+    this.randomPopulate();
+    this.startAction();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.speed !== this.state.speed && this.timer) {
+      this.stopAction();
+      this.startAction();
+    }
+  }
+
   changeTile(vector) {
-    if (vector === null) {
+    if (vector === null || this.timer ) {
       return;
     }
     let gameBoard = this.state.gameBoard;
@@ -112,6 +138,16 @@ class Wrapper extends React.Component {
     this.timer = undefined;
   }
 
+  clearAction() {
+    this.stopAction()
+    this.setState({
+      gameBoard: initializeGameBoard(
+        this.state.height,
+        this.state.width),
+      turn: 0
+    });
+  }
+
   updateBoardSize(value) {
     const BoardSizeArr = value.split("x");
 
@@ -128,18 +164,11 @@ class Wrapper extends React.Component {
     });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.speed !== this.state.speed && this.timer) {
-      this.stopAction();
-      this.startAction();
-    }
-  }
-
   randomPopulate() {
     let currentGameBoard = this.state.gameBoard;
 
-    // Aim to have seed random between 0.4 & 0.75
-    // Formulate is to take random number, times by range and add lowest number
+    // Random seed between 0.4 & 0.75
+    // Take random number, times by range and add lowest number
     const chanceToLive = Math.random() * 0.35 + 0.4;
     const nextGameBoard = currentGameBoard.map(tile => {
       const outcome = Math.random() * chanceToLive;
@@ -163,9 +192,10 @@ class Wrapper extends React.Component {
           randomPopulate={this.randomPopulate.bind(this)}
           startAction={this.startAction.bind(this)}
           stopAction={this.stopAction.bind(this)}
+          clearAction={this.clearAction.bind(this)}
           turn={this.state.turn}
         />
-        <GameBoard
+        <Grid
           gameBoard={this.state.gameBoard}
           width={this.state.width}
           height={this.state.height}

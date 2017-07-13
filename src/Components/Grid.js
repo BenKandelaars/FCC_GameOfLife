@@ -1,7 +1,7 @@
 import React from "react";
 import { convertIndex2Coord } from "./HelperComponents.js";
 
-class GameBoard extends React.Component {
+class Grid extends React.Component {
   handleClick(e, width) {
     const dataID = e.target.getAttribute("data-id");
     const vector = convertIndex2Coord(dataID, width);
@@ -43,4 +43,4 @@ class GameBoard extends React.Component {
   }
 }
 
-export default GameBoard;
+export default Grid;
